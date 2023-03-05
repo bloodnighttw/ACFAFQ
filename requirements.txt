@@ -1,0 +1,4 @@
+selenium>=4.8.2
+urlextract>=1.8.0
+xtempmail>=0.10
+webdriver-auto-update>=0.1.0
