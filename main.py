@@ -39,8 +39,8 @@ second_account = ''.join(random.choice(string.ascii_letters) for i in range(10))
 extractor = URLExtract()
 driver1 = webdriver.Chrome(service=s, options=option)
 
-email1 = Email(name=account, ext=EMAIL.MAILTO_PLUS)
-email2 = Email(name=second_account, ext=EMAIL.MAILTO_PLUS)
+email1: Email
+email2: Email
 
 
 def create_account(open_link="https://quizlet.com/", account_name=account, driver=driver1):
@@ -96,7 +96,11 @@ def refer_account(driver: webdriver = driver1) -> string:
     return copy_link
 
 
-if __name__ == '__main__':
+def generate() -> dict:
+    global email2, email1
+    email1 = Email(name=account, ext=EMAIL.MAILTO_PLUS)
+    email2 = Email(name=second_account, ext=EMAIL.MAILTO_PLUS)
+
     print(f"Create first account for {account}")
     create_account()
 
@@ -132,3 +136,9 @@ if __name__ == '__main__':
     print("===============================================================================")
     print(f"Your Account Name:{account}")
     print(f"Your Password:{password}")
+
+    return {'account': account, 'password': password}
+
+
+if __name__ == '__main__':
+    generate()
