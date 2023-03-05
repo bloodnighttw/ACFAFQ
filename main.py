@@ -17,7 +17,7 @@ path = "wd/chromedriver.exe"
 
 check_driver('wd')
 
-# Remove this and Change Userman you want like this : firstEmail = 'type your username here'
+# Remove this and Change Username you want like this : firstEmail = 'type your username here'
 account = ''.join(random.choice(string.ascii_letters) for i in range(10))
 # Change your password here
 password = "0p;/9ol."
@@ -35,7 +35,7 @@ app1 = Email(name=account, ext=EMAIL.MAILTO_PLUS)
 app2 = Email(name=secondEmail, ext=EMAIL.MAILTO_PLUS)
 
 
-def crateAccount(link="https://quizlet.com/", account=account, driver=driver1):
+def create_account(link="https://quizlet.com/", account_name=account, driver=driver1):
     driver.get(link)
 
     driver.find_element(By.CSS_SELECTOR, "[aria-label='Sign up']").click()
@@ -48,7 +48,7 @@ def crateAccount(link="https://quizlet.com/", account=account, driver=driver1):
     birthMonth.select_by_index(1)
     birthDay.select_by_index(1)
 
-    driver.find_element(By.ID, "email").send_keys(f"{account}@mailto.plus")
+    driver.find_element(By.ID, "email").send_keys(f"{account_name}@mailto.plus")
     driver.find_element(By.ID, "password1").send_keys(password)
 
     try:
@@ -65,28 +65,23 @@ def crateAccount(link="https://quizlet.com/", account=account, driver=driver1):
         print("error when pressing teacher")
 
 
-def checkEmail(text: string, driver=driver1):
-    urls = extractor.find_urls(text)
+first_account_or_not = True
+
+
+def check_email(data: EmailMessage, driver=driver1):
+    urls = extractor.find_urls(data.text)
     driver.get(urls[1])
-
-
-firstAccountorNot = True
-
-
-def baca(data: EmailMessage, driver=driver1):
-    checkEmail(data.text, driver)
     data.delete()  # delete message
-    print(firstAccountorNot)
-    if firstAccountorNot:
-        referNewAccount()
+    print(first_account_or_not)
+    if first_account_or_not:
+        refer_account()
 
 
-def referNewAccount(driver=driver1):
-    global firstAccountorNot, links
-    firstAccountorNot = False
+def refer_account(driver=driver1):
+    global first_account_or_not, links
+    first_account_or_not = False
 
     driver.get("https://quizlet.com/refer-a-teacher")
-    # time.sleep(100)
     driver.find_element(By.CSS_SELECTOR, "[aria-label='Copy link']").click()
 
     win32clipboard.OpenClipboard()
@@ -95,21 +90,14 @@ def referNewAccount(driver=driver1):
 
     time.sleep(3)
 
-    print(f"hi :{links}")
-
 
 if __name__ == '__main__':
-    crateAccount()
+    create_account()
     links = ""
 
-    try:
-        while len(app1.get_all_message()) == 0:
-            continue  # wait
-    except KeyboardInterrupt:
-        app1.destroy()
-
-    baca(app1.get_all_message()[0])
-    # print(links)
+    while len(app1.get_all_message()) == 0:
+        continue  # wait until received message
+    check_email(app1.get_all_message()[0])
 
     app1.destroy()
     app1.close()
@@ -117,17 +105,14 @@ if __name__ == '__main__':
 
     driver2 = webdriver.Chrome(service=s)
 
-    crateAccount(links, secondEmail, driver2)
+    create_account(links, secondEmail, driver2)
 
-    try:
-        while len(app2.get_all_message()) == 0:
-            continue  # wait
-    except KeyboardInterrupt:
-        app2.destroy()
-
-    baca(app2.get_all_message()[0], driver2)
+    while len(app2.get_all_message()) == 0:
+        continue  # wait until received message
+    check_email(app2.get_all_message()[0], driver2)
 
     app2.destroy()
+    driver2.quit()
 
     print("===============================================================================")
     print(f"Your Account Name:{account}")
