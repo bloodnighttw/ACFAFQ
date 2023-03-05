@@ -46,7 +46,7 @@ email2 = Email(name=second_account, ext=EMAIL.MAILTO_PLUS)
 def create_account(open_link="https://quizlet.com/", account_name=account, driver=driver1):
     driver.get(open_link)
 
-    time.sleep(1)
+    time.sleep(0.1)
 
     driver.find_element(By.CSS_SELECTOR, "[aria-label='Sign up']").click()
 
@@ -62,13 +62,13 @@ def create_account(open_link="https://quizlet.com/", account_name=account, drive
     driver.find_element(By.ID, "password1").send_keys(password)
 
     try:
-        time.sleep(1)
+        time.sleep(0.1)
         driver.find_element(By.NAME, "is_free_teacher").click()
     finally:
         pass  # If it works , don't touch this.
 
     try:
-        time.sleep(1)
+        time.sleep(0.1)
         driver.find_element(By.NAME, "TOS").submit()
     finally:
         pass  # If it works , don't touch this.
