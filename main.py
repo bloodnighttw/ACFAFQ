@@ -47,7 +47,6 @@ def create_account(open_link="https://quizlet.com/", account_name=account, drive
     driver.get(open_link)
 
     time.sleep(1)
-    driver.get_screenshot_as_file("screenshot.png")
 
     driver.find_element(By.CSS_SELECTOR, "[aria-label='Sign up']").click()
 
