@@ -1,4 +1,5 @@
 selenium>=4.8.2
-urlextract>=1.8.0
-xtempmail>=0.10
-webdriver-auto-update>=0.1.0
+urlextract>=1.8.0               # MIT license
+xtempmail>=0.10                 # MIT license
+webdriver-auto-update>=0.1.0    # MIT license
+fake-useragent>=1.1.1           # Apache-2.0 license
